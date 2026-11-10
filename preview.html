@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Push Your Name — development preview</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#100b24;color:#f7f3ff;font:16px system-ui;display:flex;gap:32px;justify-content:center;padding:24px}main{width:min(440px,100%)}canvas{width:100%;border-radius:24px;box-shadow:0 20px 80px #0009}aside{max-width:320px;padding:12px}h1{font-size:30px;color:#ffe17b}p{line-height:1.6;color:#c2b5dd}button,select,a{font:inherit;border:1px solid #756092;border-radius:12px;padding:12px;background:#35205c;color:white;margin:4px 0;cursor:pointer}button:hover{background:#563286}select{width:100%}.buttons{display:flex;flex-wrap:wrap;gap:6px}#status{color:#8ff3ce}video{display:none}a{display:block;text-decoration:none}@media(max-width:760px){body{display:block;padding:12px}main,aside{margin:auto}aside{max-width:440px}}
+</style>
+<main><canvas width="720" height="1280" aria-label="Letter pushing game board"></canvas></main>
+<aside><h1>PUSH YOUR NAME</h1><p>Development preview for the TikTok effect. Push each letter onto a matching outline. You can push, but cannot pull.</p>
+<select aria-label="Choose name" id="level"></select>
+<div class="buttons"><button id="start">Start round</button><button id="camera">Enable head controls</button><button id="calibrate">Centre head</button><button id="undo">Undo</button><button id="restart">Restart</button><button id="record">Record round</button><button id="stop" disabled>Stop recording</button></div>
+<p id="status" role="status">Use arrow keys to try the puzzle. Camera is off.</p><p>Head controls: face the camera, press Centre head, then turn left/right or look up/down. Return to centre between moves.</p><p>Recording saves a silent WebM of the game and camera image. Camera frames are processed in your browser. Head tracking needs an internet connection to download its model.</p><div id="downloads"></div>
+<video playsinline muted></video></aside>
+<script type="module" src="./preview.mjs"></script></html>

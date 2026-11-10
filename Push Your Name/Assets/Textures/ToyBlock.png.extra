@@ -1,0 +1,32 @@
+[
+  {
+    "guid": {
+      "a": "32540127-921f-451d-2a47-193d26170f02",
+      "b": ""
+    },
+    "extraType": "ResItemPNGImage",
+    "name": "ToyBlock",
+    "version": "0.2.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "compressionType": 0,
+    "compressQuality": 0,
+    "compressMaxResolution": 512,
+    "enableMipmap": false,
+    "filterMin": 1,
+    "filterMag": 1,
+    "filterMipmap": 0,
+    "wrapModeS": 0,
+    "wrapModeT": 0,
+    "wrapModeR": 0,
+    "premultiplyAlpha": false,
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\AppData\\Local\\Temp\\tteh-aigc\\606e20b1\\ToyBlock.png",
+    "references": []
+  }
+]

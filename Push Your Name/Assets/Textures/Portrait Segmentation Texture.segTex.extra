@@ -1,0 +1,30 @@
+[
+  {
+    "guid": {
+      "a": "b3c866b6-6269-100d-2c21-c832fd3962da",
+      "b": ""
+    },
+    "extraType": "ResItemSegmentationTexture",
+    "name": "Portrait Segmentation Texture",
+    "version": "0.1.0",
+    "rttiType": "Texture",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\Effect House\\Plugins\\SegmentationTexture@1.0.22\\resources\\builtinAssets\\default.segTex",
+    "references": [
+      {
+        "guid": "00000000-0000-0000-0000-00000000153F",
+        "propertyName": "00000000-0000-0000-0000-00000000153F"
+      },
+      {
+        "guid": "00000000-0000-0000-0000-00000000153E",
+        "propertyName": "00000000-0000-0000-0000-00000000153E"
+      }
+    ]
+  }
+]

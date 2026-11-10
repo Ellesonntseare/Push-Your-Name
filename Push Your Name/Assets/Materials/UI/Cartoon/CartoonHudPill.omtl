@@ -1,0 +1,269 @@
+{
+    "Shader": "UIKitRoundedSurface",
+    "RenderQueue": 3000,
+    "API": "",
+    "Pass": [
+        {
+            "Ausl": "a1",
+            "Cull": "Back",
+            "DepthWriteEnable": "Off",
+            "DepthTestEnable": "Off",
+            "BlendMode": "FromShader",
+            "BlendEnable": "On",
+            "SrcAlphaBlend": "One",
+            "DstAlphaBlend": "OneMSrcAlpha",
+            "SrcColorBlend": "SrcAlpha",
+            "DstColorBlend": "OneMSrcAlpha",
+            "UseFBOTexture": "Off",
+            "ZTest": "LessEqual",
+            "BlendModeOptions": [
+                "FromShader"
+            ]
+        }
+    ]
+}
+---ENDJSON
+
+---BEGIN UIPROPERTY
+
+    $Fill Color$
+    _TintColor (Color, Color) = [0.100000, 0.040000, 0.210000, 1.000000]
+    _GradientColor (Gradient Color, Color) = [0.250000, 0.120000, 0.400000, 1.000000]
+    _GradientAmount (Gradient Amount, Range(0.000000, 1.000000)) = 0.550000
+    _GradientAngle (Gradient Angle, Range(0.000000, 360.000000)) = 270.000000
+
+    $Rounded Corners$
+    _CornerRadius (Corner Radius, Range(0.000000, 360.000000)) = 200.000000
+
+    $Edge$
+    _EdgeSoftness (Softness, Range(0.000000, 32.000000)) = 1.000000
+
+    $Border$
+    _BorderWidth (Border Width, Range(0.000000, 64.000000)) = 4.000000
+    _BorderColor (Border Color, Color) = [0.090000, 0.130000, 0.290000, 1.000000]
+
+    $Sheen$
+    _SheenColor (Sheen Color, Color) = [1.000000, 1.000000, 1.000000, 0.280000]
+    _SheenHeight (Sheen Height, Range(0.000000, 1.000000)) = 0.420000
+
+    $Bevel$
+    _BevelWidth (Bevel Width, Range(0.000000, 16.000000)) = 0.000000
+    _BevelTopColor (Top Highlight, Color) = [1.000000, 1.000000, 1.000000, 0.340000]
+    _BevelBottomColor (Bottom Shade, Color) = [0.050000, 0.240000, 0.340000, 0.120000]
+
+    $Shadow$
+    _ShadowEnabled (Drop Shadow, Range(0.000000, 1.000000)) = 1.000000
+    _ShadowColor (Shadow Color, Color) = [0.090000, 0.130000, 0.290000, 0.380000]
+    _ShadowAngle (Shadow Angle, Range(0.000000, 360.000000)) = 270.000000
+    _ShadowDistance (Shadow Distance, Range(0.000000, 64.000000)) = 4.000000
+    _ShadowBlur (Shadow Blur, Range(0.000000, 64.000000)) = 8.000000
+    _ShadowPadding (Fixed Shadow Padding, Range(0.000000, 64.000000)) = 12.000000
+
+---END UIPROPERTY
+
+---BEGIN a1
+
+#version 300 es
+#pragma only_renderers glsl30 metal
+
+#pragma input attributes
+    in vec3 attPosition;
+    in vec2 attTexcoord0;
+#pragma end
+
+#pragma varying varyings
+    highp vec2 v_texCoord;
+#pragma end
+
+#pragma vs attributes varyings
+    precision highp float;
+    uniform mat4 u_MVP;
+#pragma end
+
+#pragma output targets
+    out highp vec4 o_fragColor;
+#pragma end
+
+#pragma fs varyings targets
+    precision highp float;
+    uniform sampler2D _MainTex;
+    uniform float u_opacity;
+    uniform vec4 u_color;
+
+    uniform float u_useScreenTransform;
+    uniform vec2 u_imageSize;
+    uniform vec2 u_screenSize;
+    uniform float u_screenPixelPerUnit;
+
+    // Do NOT name this _AlbedoColor: the Image plugin reserves that uniform and
+    // overwrites it with the component's own Color every frame.
+    uniform vec4 _TintColor;
+    uniform vec4 _GradientColor;
+    uniform float _GradientAmount;
+    uniform float _GradientAngle;
+    uniform float _CornerRadius;
+    uniform float _EdgeSoftness;
+    uniform float _BorderWidth;
+    uniform vec4 _BorderColor;
+
+    uniform vec4 _SheenColor;
+    uniform float _SheenHeight;
+
+    uniform float _BevelWidth;
+    uniform vec4 _BevelTopColor;
+    uniform vec4 _BevelBottomColor;
+
+    // The shadow switch is a plain uniform, NOT a UIPROPERTY Defs macro. A Defs
+    // toggle is emitted as a #define that is baked when the shader compiles, so
+    // flipping it in the Inspector leaves the running shader untouched.
+    uniform float _ShadowEnabled;
+    uniform vec4 _ShadowColor;
+    uniform float _ShadowAngle;
+    uniform float _ShadowDistance;
+    uniform float _ShadowBlur;
+    uniform float _ShadowPadding;
+
+    // Rect size in pixels, derived the same way the built-in Image shader does
+    // for Transform vs ScreenTransform hosts. The fallback keeps an unbound
+    // size from collapsing the SDF and masking the whole image away.
+    vec2 getRectPixelSize()
+    {
+        vec2 rect = u_imageSize * 32.0;
+        if (u_useScreenTransform == 1.0)
+        {
+            rect = u_screenSize * u_screenPixelPerUnit;
+        }
+        if (rect.x < 1.0 || rect.y < 1.0)
+        {
+            rect = vec2(256.0);
+        }
+        return rect;
+    }
+
+    // Signed distance to a rounded rectangle: negative inside, positive outside.
+    float roundedRectDistance(vec2 p, vec2 halfSize, float radius)
+    {
+        vec2 q = abs(p) - halfSize + radius;
+        return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - radius;
+    }
+
+    // Gradient position 0..1 along the angled axis. Running in pixel space makes
+    // the angle geometrically true; the extent term is the rect's projection onto
+    // that axis, which is also how a CSS linear-gradient sizes its gradient line.
+    float gradientPosition(vec2 p, vec2 rect)
+    {
+        float a = radians(_GradientAngle);
+        vec2 dir = vec2(cos(a), sin(a));
+        float extent = abs(dir.x) * rect.x + abs(dir.y) * rect.y;
+        return clamp(dot(p, dir) / max(extent, 0.0001) + 0.5, 0.0, 1.0);
+    }
+#pragma end
+
+void vertex()
+{
+    gl_Position = u_MVP * vec4(attPosition, 1.0);
+    v_texCoord = vec2(attTexcoord0.x, attTexcoord0.y);
+}
+
+void fragment()
+{
+    // Working in pixels keeps corners circular and border width even on any aspect ratio.
+    vec2 rect = getRectPixelSize();
+    vec2 p = (v_texCoord - 0.5) * rect;
+    vec2 outerHalf = rect * 0.5;
+
+    // Treated as an on/off switch: the lower half of the slider is fully off.
+    float shadowOn = step(0.5, _ShadowEnabled);
+    float shadowDistance = max(_ShadowDistance, 0.0);
+    // Floored like _EdgeSoftness so the shadow edge always has one pixel of AA.
+    float shadowSoftness = max(_ShadowBlur, 1.0);
+
+    // Nothing can be drawn outside the Image quad, so with the shadow ON the button
+    // shape is inset far enough for the offset plus the blur to fit inside the same
+    // rect. With the shadow OFF the shape uses the full rect, so turning the feature
+    // off restores the original footprint exactly. To keep a target button size, grow
+    // the ScreenTransform sizeDelta by 2*pad on both axes.
+    // Fixed reserve keeps fill geometry stable when shadow values animate.
+    float pad = shadowOn * min(max(_ShadowPadding, 0.0),
+                               max(min(outerHalf.x, outerHalf.y) - 2.0, 0.0));
+    vec2 halfSize = outerHalf - pad;
+
+    float maxInset = min(halfSize.x, halfSize.y);
+    float radius = clamp(_CornerRadius, 0.0, maxInset);
+    // Floor keeps the edge antialiased at a softness of zero.
+    float softness = max(_EdgeSoftness, 1.0);
+    float dist = roundedRectDistance(p, halfSize, radius);
+
+    // Gradient spans the visible button, not the padded rect.
+    // _GradientAmount 0 collapses this to a flat _TintColor fill.
+    float gradientBlend = gradientPosition(p, halfSize * 2.0) * clamp(_GradientAmount, 0.0, 1.0);
+    vec4 tint = mix(_TintColor, _GradientColor, gradientBlend);
+    vec4 imageColor = texture(_MainTex, v_texCoord) * u_color * tint;
+
+    // Sheen: a second, purely top-down gradient laid over the fill, so light reads as
+    // falling on the upper surface. Alpha ramps from _SheenColor.a at the top edge to
+    // zero at _SheenHeight of the way down, and the remainder is untouched. Measured
+    // down the VISIBLE shape, not the padded rect.
+    float yFromTop = clamp((halfSize.y - p.y) / max(halfSize.y * 2.0, 0.0001), 0.0, 1.0);
+    float sheenBlend = (1.0 - clamp(yFromTop / max(_SheenHeight, 0.0001), 0.0, 1.0)) * _SheenColor.a;
+    imageColor.rgb = mix(imageColor.rgb, _SheenColor.rgb, sheenBlend);
+    imageColor.a = mix(imageColor.a, 1.0, sheenBlend);
+
+    float borderWidth = clamp(_BorderWidth, 0.0, maxInset);
+
+    // Bevel: two thin inner lines, light along the top and dark along the bottom, which
+    // is what makes the edge read as having thickness. The band sits immediately inside
+    // the border, and the outward surface normal's Y component splits top from bottom so
+    // the lines wrap around the corners and fade out at the left/right midpoints instead
+    // of ending abruptly.
+    float bevelWidth = clamp(_BevelWidth, 0.0, maxInset);
+    float bevelOuter = smoothstep(-borderWidth - bevelWidth - 0.5, -borderWidth - bevelWidth + 0.5, dist);
+    float bevelInner = smoothstep(-borderWidth - 0.5, -borderWidth + 0.5, dist);
+    float bevelBand = clamp(bevelOuter - bevelInner, 0.0, 1.0) * step(0.0001, bevelWidth);
+    vec2 distGradient = vec2(
+        roundedRectDistance(p + vec2(1.0, 0.0), halfSize, radius) - roundedRectDistance(p - vec2(1.0, 0.0), halfSize, radius),
+        roundedRectDistance(p + vec2(0.0, 1.0), halfSize, radius) - roundedRectDistance(p - vec2(0.0, 1.0), halfSize, radius));
+    float normalY = distGradient.y / max(length(distGradient), 0.0001);
+    float bevelTopBlend = bevelBand * clamp(normalY, 0.0, 1.0) * _BevelTopColor.a;
+    float bevelBottomBlend = bevelBand * clamp(-normalY, 0.0, 1.0) * _BevelBottomColor.a;
+    imageColor.rgb = mix(imageColor.rgb, _BevelTopColor.rgb, bevelTopBlend);
+    imageColor.rgb = mix(imageColor.rgb, _BevelBottomColor.rgb, bevelBottomBlend);
+    imageColor.a = mix(imageColor.a, 1.0, max(bevelTopBlend, bevelBottomBlend));
+
+    // Border is inset from the outer edge and follows the same rounded shape, and is
+    // painted after the sheen and bevel to match CSS, where the border sits above the
+    // background and above inset shadows.
+    // step() keeps a zero width from drawing a hairline from the softness ramp.
+    float halfSoft = softness * 0.5;
+    float borderBlend = smoothstep(-borderWidth - halfSoft, -borderWidth + halfSoft, dist);
+    borderBlend *= step(0.0001, borderWidth) * _BorderColor.a;
+    imageColor.rgb = mix(imageColor.rgb, _BorderColor.rgb, borderBlend);
+    imageColor.a = mix(imageColor.a, 1.0, borderBlend);
+
+    // Feather INWARD from the finished rounded edge. Fading symmetrically across
+    // dist = 0 would erode the shape by the softness amount, which also tightens
+    // the corner radius from R to R - softness and clips against the quad border.
+    float shapeMask = 1.0 - smoothstep(-softness, 0.0, dist);
+    imageColor.a *= u_opacity * shapeMask;
+
+    // Same outline pushed along the angle, using the _GradientAngle convention:
+    // 0 = right, 90 = up, so 270 casts the shadow straight down. Unlike the fill
+    // this fades symmetrically across the outline, which is what spreads the blur
+    // outward into the padding. A CSS blur-radius B maps to roughly B/2 here,
+    // because the fade spans 2 * _ShadowBlur pixels in total.
+    float sa = radians(_ShadowAngle);
+    vec2 shadowOffset = vec2(cos(sa), sin(sa)) * shadowDistance;
+    float shadowDist = roundedRectDistance(p - shadowOffset, halfSize, radius);
+    float shadowMask = 1.0 - smoothstep(-shadowSoftness, shadowSoftness, shadowDist);
+    float shadowAlpha = _ShadowColor.a * shadowMask * u_opacity * shadowOn;
+
+    // Straight-alpha "fill over shadow", so the shadow stays behind an opaque
+    // button and shows through a translucent one.
+    float fillAlpha = imageColor.a;
+    float outAlpha = fillAlpha + shadowAlpha * (1.0 - fillAlpha);
+    vec3 outColor = (imageColor.rgb * fillAlpha + _ShadowColor.rgb * shadowAlpha * (1.0 - fillAlpha))
+                    / max(outAlpha, 0.0001);
+    o_fragColor = vec4(outColor, outAlpha);
+}
+
+---END a1

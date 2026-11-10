@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "8c2dc020-1fec-8b3c-5180-28ec86bda01b",
+      "b": ""
+    },
+    "extraType": "ResItemMaterialOmtl",
+    "name": "CartoonButton",
+    "version": "0.6.0",
+    "rttiType": "Material",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "references": [],
+    "skinObjGuid": "Guid(5247407317391425985, 807441957136235680)",
+    "currAuslVersion": "1.0.0"
+  }
+]

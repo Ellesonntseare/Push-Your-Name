@@ -1,0 +1,32 @@
+[
+  {
+    "guid": {
+      "a": "edc9e227-31bf-e2d9-eec5-f4f684385006",
+      "b": ""
+    },
+    "extraType": "ResItemMaterialOmtl",
+    "name": "Segmentation Material",
+    "version": "0.6.0",
+    "rttiType": "Material",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\Effect House\\Plugins\\SegmentationTexture@1.0.22\\resources\\materials\\Default_Segmentation_Material.omtl",
+    "references": [
+      {
+        "propertyName": "_SegTex",
+        "guid": "b3c866b6-6269-100d-2c21-c832fd3962da"
+      },
+      {
+        "propertyName": "_MainTex",
+        "guid": "00000000-0000-0000-0000-000000001544"
+      }
+    ],
+    "skinObjGuid": "Guid(4806148789529121006, 6694776528395235242)",
+    "currAuslVersion": "1.0.0"
+  }
+]

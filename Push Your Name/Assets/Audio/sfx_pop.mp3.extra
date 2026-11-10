@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "508c29db-60c0-8f6e-8133-1e9f781a87c2",
+      "b": ""
+    },
+    "extraType": "ResItemMP3",
+    "name": "sfx_pop",
+    "version": "0.1.0",
+    "rttiType": "AudioAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "mccState": "SUCCESS",
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\Effect House\\Resources\\ask-ai\\game-assets\\sounds\\sfx_pop.mp3",
+    "references": []
+  }
+]

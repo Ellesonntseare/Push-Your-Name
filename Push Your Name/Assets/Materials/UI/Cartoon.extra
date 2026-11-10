@@ -1,0 +1,19 @@
+[
+  {
+    "guid": {
+      "a": "bbb7f173-b11e-f322-f4e1-69504df4df2d",
+      "b": ""
+    },
+    "extraType": "ResItemFolder",
+    "name": "Cartoon",
+    "version": "0.1.0",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": true
+    },
+    "objGuid": "",
+    "references": []
+  }
+]

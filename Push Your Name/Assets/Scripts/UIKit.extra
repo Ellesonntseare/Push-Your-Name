@@ -1,0 +1,19 @@
+[
+  {
+    "guid": {
+      "a": "c0f700c9-0df6-11bf-46fc-4b9b98037c8b",
+      "b": ""
+    },
+    "extraType": "ResItemFolder",
+    "name": "UIKit",
+    "version": "0.1.0",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": true
+    },
+    "objGuid": "",
+    "references": []
+  }
+]

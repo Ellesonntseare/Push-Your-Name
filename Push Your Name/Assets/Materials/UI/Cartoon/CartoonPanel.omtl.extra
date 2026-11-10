@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "152f7400-8bde-ee4b-a394-0e145e1f2af3",
+      "b": ""
+    },
+    "extraType": "ResItemMaterialOmtl",
+    "name": "CartoonPanel",
+    "version": "0.6.0",
+    "rttiType": "Material",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "references": [],
+    "skinObjGuid": "Guid(5026017412565453832, 10587267095015041667)",
+    "currAuslVersion": "1.0.0"
+  }
+]

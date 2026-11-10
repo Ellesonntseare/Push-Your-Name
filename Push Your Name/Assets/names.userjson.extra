@@ -1,0 +1,21 @@
+[
+  {
+    "guid": {
+      "a": "56693710-98fc-cbfd-685d-d6750ccee8cc",
+      "b": ""
+    },
+    "extraType": "ResItemJsonAsset",
+    "name": "names",
+    "version": "0.1.0",
+    "rttiType": "JsonAsset",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\Desktop\\Builts\\2026-11-02\\c\\work\\effect-house\\names.userjson",
+    "references": []
+  }
+]

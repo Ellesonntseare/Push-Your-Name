@@ -1,0 +1,23 @@
+[
+  {
+    "guid": {
+      "a": "e26f45ac-1af0-3025-2394-c11bc775427a",
+      "b": ""
+    },
+    "extraType": "ResItemJSScript",
+    "name": "ButtonPressState",
+    "version": "0.1.0",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\Desktop\\Builts\\2026-11-02\\c\\outputs\\PushYourName\\Push Your Name\\Assets\\Scripts\\UIKit\\ButtonPressState.ts",
+    "references": [],
+    "scriptAnnotation": [],
+    "needCompile": true,
+    "isUserScript": true
+  }
+]

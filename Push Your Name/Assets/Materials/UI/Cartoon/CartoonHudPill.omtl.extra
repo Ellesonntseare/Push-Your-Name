@@ -1,0 +1,22 @@
+[
+  {
+    "guid": {
+      "a": "91331299-ee67-b777-1a96-71620e09e288",
+      "b": ""
+    },
+    "extraType": "ResItemMaterialOmtl",
+    "name": "CartoonHudPill",
+    "version": "0.6.0",
+    "rttiType": "Material",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "references": [],
+    "skinObjGuid": "Guid(5636027934852950296, 1220161554654684591)",
+    "currAuslVersion": "1.0.0"
+  }
+]

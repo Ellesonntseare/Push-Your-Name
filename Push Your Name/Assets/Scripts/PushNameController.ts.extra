@@ -1,0 +1,23 @@
+[
+  {
+    "guid": {
+      "a": "14238711-699c-4c19-2fad-c358fd3edac9",
+      "b": ""
+    },
+    "extraType": "ResItemJSScript",
+    "name": "PushNameController",
+    "version": "0.1.0",
+    "authorizationInfo": "",
+    "extendedInfo": {
+      "isVisibleInInspector": true,
+      "hideInPanel": false,
+      "expandInPanel": false
+    },
+    "objGuid": "",
+    "resourceFilePath": "C:\\Users\\elles\\Desktop\\Builts\\2026-11-02\\c\\outputs\\PushYourName\\Push Your Name\\Assets\\Scripts\\PushNameController.ts",
+    "references": [],
+    "scriptAnnotation": [],
+    "needCompile": true,
+    "isUserScript": true
+  }
+]

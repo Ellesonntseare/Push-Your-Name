@@ -1,0 +1,26 @@
+PROJECT: Push Your Name
+
+Build a native TikTok Effect House game matching the approved purple, coral, gold and mint letter-block concept.
+
+Names MUST be fixed exactly: SERAME, MATHAPELO, MAJORO, NTSEARE, RORISANG, LEPHUTING.
+Use the six fixed boards in levels.mjs, in the order already specified there.
+Portable rules are in game-core.mjs. Port these to TypeScript/APJS; browser camera and recording APIs in preview.mjs are only the development harness and must not be used as TikTok runtime APIs.
+
+VISUALS
+Portrait camera background. Board in upper part, user's face visible below. Title PUSH YOUR NAME, target name, large remaining time, placed-letter count, move count. Mint pusher with simple eyes. Coloured raised-looking letter blocks. Outlined letter targets directly on the board; multiple rows as needed. Dark violet walls and purple floor. Keep TikTok overlay areas clear.
+
+CONTROLS
+Track one face. Calibrate neutral pose for one second, then process yaw/pitch. A 13-degree threshold triggers one grid step; return within six degrees in both axes to rearm. Smooth input over time. When face tracking is lost, disarm movement and require neutral pose again. Verify mirrored left/right and up/down direction in TikTok on a physical phone. All head movement is relative to calibrated neutral.
+
+RULES
+Only pushing, no pulling, no pushing two blocks together. Each target must contain its own letter, including duplicate-letter goals. Allow correct blocks to move again so they do not lock access paths. Only successful moves count. Undo restores board and move count but never restores elapsed time. Restart begins the same fixed puzzle again. Use fixed name selector before a round.
+
+TIME AND RECORDING
+Ready/calibration, 3–2–1, Playing, Won or Lost. Provisional time limits: SERAME 60, MAJORO 55, NTSEARE 55, RORISANG 50, MATHAPELO 50, LEPHUTING 45 seconds. Tune after real head-control playtesting. Do not assume inverse solution route length is optimal or guarantees an appropriate time limit.
+
+Use native Video Record On Start to start the round after calibration. Do not use browser MediaRecorder in the effect. Respect native recording pause/resume; do not reset the timer on every recording segment. Preserve round state when recording pauses and freeze or resume deliberately without granting extra time. Test this lifecycle on TikTok. At win show NAME COMPLETE, elapsed time and moves with confetti. At expiry show TIME'S UP and placed letters. Hold the result until replay/restart.
+
+DELIVERY CHECKS
+Run native script compilation and inspect Console. Verify all six routes through the ported engine. Test face loss/reacquisition, timer expiry, duplicate letters, reset, undo, record start/stop/pause/resume, and final recording framing. Run native performance/package checks before submission. Sign-in, phone preview, and submission are separate from local code verification.
+
+This brief is an implementation handoff, not a completed native effect.
